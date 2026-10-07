@@ -1,0 +1,14 @@
+{
+  "llama3_8B_instruct_tqa_mc2_seed42_val0.2": {
+    "layer": 13,
+    "head": 28
+  },
+  "qwen2.5_7B_tqa_mc2_seed42_val0.2": {
+    "layer": 16,
+    "head": 11
+  },
+  "qwen3_8B_tqa_mc2_seed42_val0.2": {
+    "layer": 21,
+    "head": 17
+  }
+}
