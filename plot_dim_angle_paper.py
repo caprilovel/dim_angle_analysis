@@ -1,3 +1,7 @@
+# Single-panel paper figure: DiM direction angle vs. subsample size n for
+# one model (Llama3-8B-Instruct, layer 13 / head 28, TruthfulQA), reading
+# the dense 500-point sweep CSV produced by test_dim_angle_sample.py.
+
 import pandas as pd
 from common import setup_paper_style
 setup_paper_style()

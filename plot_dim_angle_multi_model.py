@@ -1,3 +1,8 @@
+# Multi-panel figure: one panel per (dataset, model), each showing the
+# split-half DiM angle vs. subsample size n, with the fitted tan^2(theta) =
+# C/n curve (see fit_dim_angle_c.py) overlaid and flagged if the fit is
+# poor (R^2 < 0.9), across TruthfulQA / Refusal / Sycophancy.
+
 import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
