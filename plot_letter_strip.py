@@ -5,11 +5,11 @@
 
 import sys
 import numpy as np
-from common import setup_paper_style
+from common import setup_paper_style, ANTHROPIC_AI_RISK_DIR
 setup_paper_style()
 import matplotlib.pyplot as plt
 
-sys.path.insert(0, '/home/zhu.3723/code/code/quadratic_probe/quad_exp/anthropic_ai_risk')
+sys.path.insert(0, ANTHROPIC_AI_RISK_DIR)
 from data import make_contrastive_pairs
 
 COLOR_A = '#2a78d6'

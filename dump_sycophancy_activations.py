@@ -11,8 +11,8 @@ import argparse
 import torch
 import numpy as np
 
-ANTHROPIC_DIR = "/home/zhu.3723/code/code/quadratic_probe/quad_exp/anthropic_ai_risk"
-sys.path.insert(0, ANTHROPIC_DIR)
+from common import ANTHROPIC_AI_RISK_DIR
+sys.path.insert(0, ANTHROPIC_AI_RISK_DIR)
 
 from data import make_contrastive_pairs, pair_to_prompts, answer_letter_token_index
 from transformers import AutoTokenizer, AutoModelForCausalLM

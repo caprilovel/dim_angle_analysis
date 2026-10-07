@@ -12,9 +12,9 @@ import numpy as np
 
 _DEFAULT_OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'features_refusal')
 
-REFUSAL_AIRD = "/home/zhu.3723/code/code/quadratic_probe/quad_refusal/refusal-aird"
-sys.path.insert(0, REFUSAL_AIRD)
-os.chdir(REFUSAL_AIRD)
+from common import REFUSAL_AIRD_DIR
+sys.path.insert(0, REFUSAL_AIRD_DIR)
+os.chdir(REFUSAL_AIRD_DIR)
 
 from pipeline.model_utils.model_factory import construct_model_base
 from pipeline.utils.hook_utils import add_hooks

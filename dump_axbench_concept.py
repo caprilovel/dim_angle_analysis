@@ -7,11 +7,12 @@ import argparse
 import numpy as np
 import torch
 
+from common import AXBENCH_CACHE_PATH
+
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--cache_path', type=str,
-                         default='/research/nfs_khalili_17/ding/code/quadratic_probe/qb/cache/expanded_9b_l31/hidden_states_axbench.pt')
+    parser.add_argument('--cache_path', type=str, default=AXBENCH_CACHE_PATH)
     parser.add_argument('--concept_id', type=int, required=True)
     parser.add_argument('--out_npz', type=str, required=True)
     args = parser.parse_args()

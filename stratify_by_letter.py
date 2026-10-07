@@ -20,9 +20,9 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
 
-from common import angle_between
+from common import angle_between, ANTHROPIC_AI_RISK_DIR
 
-sys.path.insert(0, '/home/zhu.3723/code/code/quadratic_probe/quad_exp/anthropic_ai_risk')
+sys.path.insert(0, ANTHROPIC_AI_RISK_DIR)
 from data import make_contrastive_pairs
 
 

@@ -8,9 +8,9 @@ import torch
 import pandas as pd
 from scipy.optimize import curve_fit
 
-from common import angle_between, normalize, fold_assignment
+from common import angle_between, normalize, fold_assignment, AXBENCH_CACHE_PATH
 
-CACHE_PATH = '/research/nfs_khalili_17/ding/code/quadratic_probe/qb/cache/expanded_9b_l31/hidden_states_axbench.pt'
+CACHE_PATH = AXBENCH_CACHE_PATH
 HERE = os.path.dirname(os.path.abspath(__file__))
 FEATURES_DIR = os.path.join(HERE, 'features_axbench')
 RESULTS_DIR = os.path.join(HERE, 'results')

@@ -2,7 +2,21 @@
 # this repo. Kept dependency-free (numpy only) so every script can import
 # it without pulling in matplotlib or the external pipeline repos.
 
+import os
 import numpy as np
+
+# Paths to sibling repos / cache files this repo's dump scripts depend on
+# but does not itself contain (see CLAUDE.md "External dependencies").
+# Override via environment variable if your checkout lives elsewhere.
+ANTHROPIC_AI_RISK_DIR = os.environ.get(
+    'DIM_ANGLE_ANTHROPIC_AI_RISK_DIR',
+    '/home/zhu.3723/code/code/quadratic_probe/quad_exp/anthropic_ai_risk')
+REFUSAL_AIRD_DIR = os.environ.get(
+    'DIM_ANGLE_REFUSAL_AIRD_DIR',
+    '/home/zhu.3723/code/code/quadratic_probe/quad_refusal/refusal-aird')
+AXBENCH_CACHE_PATH = os.environ.get(
+    'DIM_ANGLE_AXBENCH_CACHE_PATH',
+    '/research/nfs_khalili_17/ding/code/quadratic_probe/qb/cache/expanded_9b_l31/hidden_states_axbench.pt')
 
 
 def normalize(v):
