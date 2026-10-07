@@ -6,19 +6,14 @@
 import os
 import numpy as np
 import pandas as pd
-import matplotlib
-matplotlib.use('Agg')
-matplotlib.rcParams['pdf.fonttype'] = 42
-matplotlib.rcParams['ps.fonttype'] = 42
+from common import setup_paper_style, COLOR_POS, COLOR_NEG
+setup_paper_style()
 import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(HERE, 'results')
 OUT_DIR = os.path.join(HERE, 'figures', 'axbench_per_concept')
 os.makedirs(OUT_DIR, exist_ok=True)
-
-COLOR_POS = '#2a78d6'
-COLOR_NEG = '#eb6834'
 
 summary = pd.read_csv(os.path.join(RESULTS_DIR, 'axbench_all_concepts_summary.csv'))
 

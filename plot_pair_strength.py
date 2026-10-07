@@ -12,15 +12,10 @@
 
 import numpy as np
 import argparse
-import matplotlib
-matplotlib.use('Agg')
-matplotlib.rcParams['pdf.fonttype'] = 42
-matplotlib.rcParams['ps.fonttype'] = 42
+
+from common import normalize, setup_paper_style
+setup_paper_style()
 import matplotlib.pyplot as plt
-
-
-def normalize(v):
-    return v / np.linalg.norm(v)
 
 
 def main():

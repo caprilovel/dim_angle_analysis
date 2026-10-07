@@ -20,14 +20,10 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
 
+from common import angle_between
+
 sys.path.insert(0, '/home/zhu.3723/code/code/quadratic_probe/quad_exp/anthropic_ai_risk')
 from data import make_contrastive_pairs
-
-
-def angle_between(u, v):
-    cos = np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
-    cos = np.clip(cos, -1.0, 1.0)
-    return np.degrees(np.arccos(cos))
 
 
 def split_half_sweep(Z, n_max, n_trials=200, seed=42):

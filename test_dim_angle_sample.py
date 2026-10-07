@@ -27,14 +27,10 @@ from einops import rearrange
 
 import sys
 
+from common import angle_between
+
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _DEFAULT_HONEST_LLAMA_DIR = os.path.normpath(os.path.join(_HERE, '..', 'honest_llama'))
-
-
-def angle_between(u, v):
-    cos = np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
-    cos = np.clip(cos, -1.0, 1.0)
-    return np.degrees(np.arccos(cos))
 
 
 def main():

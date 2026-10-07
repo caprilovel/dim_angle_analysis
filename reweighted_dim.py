@@ -29,19 +29,7 @@
 import numpy as np
 import argparse
 
-
-def normalize(v):
-    return v / np.linalg.norm(v)
-
-
-def fold_assignment(n, K, rng):
-    idx = np.arange(n)
-    rng.shuffle(idx)
-    folds = np.array_split(idx, K)
-    fold_id = np.empty(n, dtype=int)
-    for k, fold in enumerate(folds):
-        fold_id[fold] = k
-    return fold_id
+from common import normalize, fold_assignment
 
 
 def reweighted_dim(Z, K=5, gamma=0.3, lam=0.01, c=5.0, T=10, seed=42, init_mu=None, verbose=False):

@@ -8,6 +8,8 @@ import torch
 import pandas as pd
 from scipy.optimize import curve_fit
 
+from common import angle_between, normalize, fold_assignment
+
 CACHE_PATH = '/research/nfs_khalili_17/ding/code/quadratic_probe/qb/cache/expanded_9b_l31/hidden_states_axbench.pt'
 HERE = os.path.dirname(os.path.abspath(__file__))
 FEATURES_DIR = os.path.join(HERE, 'features_axbench')
@@ -17,12 +19,6 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 
 NORM_OUTLIER_THRESHOLD = 1000.0  # see dump_axbench_concept.py diagnosis: ~6 background
                                    # samples have norm ~7636 vs a normal median of ~317-500
-
-
-def angle_between(u, v):
-    cos = np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
-    cos = np.clip(cos, -1.0, 1.0)
-    return np.degrees(np.arccos(cos))
 
 
 def split_half_sweep(Z_pos, Z_neg, n_max, n_trials=200, seed=42):
@@ -58,10 +54,6 @@ def fit_tan2_c(n, theta_split_deg, n_min_fit=5):
     return C, r2
 
 
-def normalize(v):
-    return v / np.linalg.norm(v)
-
-
 def reweight_one_group(X, mu, fold_id, K, gamma, lam, c):
     N = len(X)
     a = np.empty(N)
@@ -77,16 +69,6 @@ def reweight_one_group(X, mu, fold_id, K, gamma, lam, c):
     w_new = 1.0 / (tau2_tilde + lam)
     w_new = np.clip(w_new, 0, c / N)
     return w_new / w_new.sum()
-
-
-def fold_assignment(n, K, rng):
-    idx = np.arange(n)
-    rng.shuffle(idx)
-    folds = np.array_split(idx, K)
-    fold_id = np.empty(n, dtype=int)
-    for k, fold in enumerate(folds):
-        fold_id[fold] = k
-    return fold_id
 
 
 def reweighted_dim_unpaired(pos, neg, K=5, gamma=0.3, lam=0.01, c=5.0, T=10, seed=42):

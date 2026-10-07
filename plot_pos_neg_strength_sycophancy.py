@@ -12,14 +12,10 @@
 
 import argparse
 import numpy as np
-import matplotlib
-matplotlib.use('Agg')
-matplotlib.rcParams['pdf.fonttype'] = 42
-matplotlib.rcParams['ps.fonttype'] = 42
-import matplotlib.pyplot as plt
 
-COLOR_POS = '#2a78d6'
-COLOR_NEG = '#eb6834'
+from common import setup_paper_style, COLOR_POS, COLOR_NEG
+setup_paper_style()
+import matplotlib.pyplot as plt
 
 
 def main():

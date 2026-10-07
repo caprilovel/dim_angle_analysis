@@ -21,19 +21,7 @@
 import numpy as np
 import argparse
 
-
-def normalize(v):
-    return v / np.linalg.norm(v)
-
-
-def fold_assignment(n, K, rng):
-    idx = np.arange(n)
-    rng.shuffle(idx)
-    folds = np.array_split(idx, K)
-    fold_id = np.empty(n, dtype=int)
-    for k, fold in enumerate(folds):
-        fold_id[fold] = k
-    return fold_id
+from common import normalize, fold_assignment
 
 
 def reweight_one_group(X, mu, fold_id, K, gamma, lam, c):

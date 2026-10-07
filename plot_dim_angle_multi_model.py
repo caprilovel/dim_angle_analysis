@@ -1,18 +1,13 @@
 import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
-import matplotlib
-matplotlib.use('Agg')
-matplotlib.rcParams['pdf.fonttype'] = 42
-matplotlib.rcParams['ps.fonttype'] = 42
-import matplotlib.pyplot as plt
-
 # Palette: a normal (good 1/n fit) panel in blue, a flagged (poor fit /
 # heterogeneous) panel in orange -- status-like use, not a categorical
 # series, so only two colors appear and each is labeled directly in its
 # panel title rather than via a legend.
-COLOR_OK = '#2a78d6'
-COLOR_FLAG = '#eb6834'
+from common import setup_paper_style, COLOR_OK, COLOR_FLAG
+setup_paper_style()
+import matplotlib.pyplot as plt
 
 # All panels use split-half angle: the angle between two DISJOINT n-sample
 # DiM estimates drawn from the same pool. This has no degeneracy as n

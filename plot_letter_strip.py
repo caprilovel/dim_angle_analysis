@@ -5,10 +5,8 @@
 
 import sys
 import numpy as np
-import matplotlib
-matplotlib.use('Agg')
-matplotlib.rcParams['pdf.fonttype'] = 42
-matplotlib.rcParams['ps.fonttype'] = 42
+from common import setup_paper_style
+setup_paper_style()
 import matplotlib.pyplot as plt
 
 sys.path.insert(0, '/home/zhu.3723/code/code/quadratic_probe/quad_exp/anthropic_ai_risk')

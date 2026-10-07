@@ -28,11 +28,7 @@ import argparse
 import os
 import csv
 
-
-def angle_between(u, v):
-    cos = np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
-    cos = np.clip(cos, -1.0, 1.0)
-    return np.degrees(np.arccos(cos))
+from common import angle_between
 
 
 def main():

@@ -1,8 +1,6 @@
 import pandas as pd
-import matplotlib
-matplotlib.use('Agg')
-matplotlib.rcParams['pdf.fonttype'] = 42  # editable text in PDF (no Type 3 fonts)
-matplotlib.rcParams['ps.fonttype'] = 42
+from common import setup_paper_style
+setup_paper_style()
 import matplotlib.pyplot as plt
 
 df = pd.read_csv('results/dim_angle_vs_n_dense500.csv')
