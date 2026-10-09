@@ -10,6 +10,18 @@ import torch
 from common import AXBENCH_CACHE_PATH
 
 
+def load_axbench_cache(cache_path):
+    """Load the cached axbench hidden-states dict and return (hidden,
+    labels, concept_ids, prompts) as plain numpy arrays."""
+    d = torch.load(cache_path, map_location='cpu', weights_only=False)
+    layer_key = [k for k in d.keys() if isinstance(k, int)][0]
+    hidden = d[layer_key].numpy()
+    labels = d['labels'].numpy() if torch.is_tensor(d['labels']) else np.asarray(d['labels'])
+    concept_ids = np.asarray(d['concept_ids'])
+    prompts = np.asarray(d['prompts'], dtype=object)
+    return hidden, labels, concept_ids, prompts
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--cache_path', type=str, default=AXBENCH_CACHE_PATH)
@@ -17,11 +29,7 @@ def main():
     parser.add_argument('--out_npz', type=str, required=True)
     args = parser.parse_args()
 
-    d = torch.load(args.cache_path, map_location='cpu', weights_only=False)
-    layer_key = [k for k in d.keys() if isinstance(k, int)][0]
-    hidden = d[layer_key].numpy()
-    labels = d['labels'].numpy() if torch.is_tensor(d['labels']) else np.asarray(d['labels'])
-    concept_ids = np.asarray(d['concept_ids'])
+    hidden, labels, concept_ids, _ = load_axbench_cache(args.cache_path)
 
     pos_mask = (labels == 1) & (concept_ids == args.concept_id)
     neg_mask = (labels == 0)

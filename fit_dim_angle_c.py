@@ -26,11 +26,8 @@
 import numpy as np
 import pandas as pd
 import argparse
-from scipy.optimize import curve_fit
 
-
-def tan2_model(n, C):
-    return C / n
+from common import fit_tan2_c
 
 
 def main():
@@ -53,18 +50,12 @@ def main():
         df = pd.read_csv(csv_path)
         df = df[df['n'] >= args.n_min_fit]
 
+        C, r2 = fit_tan2_c(df['n'].values, df['mean'].values, n_min_fit=args.n_min_fit)
+
         theta_split_rad = np.radians(df['mean'].values)
         theta_single_rad = theta_split_rad / np.sqrt(2)
         tan2_theta = np.tan(theta_single_rad) ** 2
         n = df['n'].values.astype(float)
-
-        # fit tan^2(theta_single) = C / n
-        popt, _ = curve_fit(tan2_model, n, tan2_theta, p0=[1.0])
-        C = popt[0]
-        pred = tan2_model(n, C)
-        ss_res = np.sum((tan2_theta - pred) ** 2)
-        ss_tot = np.sum((tan2_theta - tan2_theta.mean()) ** 2)
-        r2 = 1 - ss_res / ss_tot if ss_tot > 0 else float('nan')
 
         # log-log slope as an independent check: tan^2(theta) ~ n^alpha,
         # alpha should be close to -1 if the 1/n model is a good fit

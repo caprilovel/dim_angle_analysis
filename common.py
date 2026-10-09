@@ -4,6 +4,7 @@
 
 import os
 import numpy as np
+from scipy.optimize import curve_fit
 
 # Paths to sibling repos / cache files this repo's dump scripts depend on
 # but does not itself contain (see CLAUDE.md "External dependencies").
@@ -40,6 +41,29 @@ def fold_assignment(n, K, rng):
     for k, fold in enumerate(folds):
         fold_id[fold] = k
     return fold_id
+
+
+def fit_tan2_c(n, theta_split_deg, n_min_fit=5):
+    """Fit tan^2(theta_split/sqrt(2)) ~= C/n (see fit_dim_angle_c.py for the
+    derivation: theta_split/sqrt(2) approximates the single-estimate angle
+    to the true direction under a small-angle/high-dim-noise model).
+
+    Returns (C, r2).
+    """
+    n = np.asarray(n)
+    theta_split_deg = np.asarray(theta_split_deg)
+    mask = n >= n_min_fit
+    n_fit = n[mask].astype(float)
+    theta_single_rad = np.radians(theta_split_deg[mask]) / np.sqrt(2)
+    tan2 = np.tan(theta_single_rad) ** 2
+
+    popt, _ = curve_fit(lambda x, C: C / x, n_fit, tan2, p0=[1.0])
+    C = popt[0]
+    pred = C / n_fit
+    ss_res = np.sum((tan2 - pred) ** 2)
+    ss_tot = np.sum((tan2 - tan2.mean()) ** 2)
+    r2 = 1 - ss_res / ss_tot if ss_tot > 0 else float('nan')
+    return C, r2
 
 
 def setup_paper_style():

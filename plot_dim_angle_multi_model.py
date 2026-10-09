@@ -5,12 +5,11 @@
 
 import numpy as np
 import pandas as pd
-from scipy.optimize import curve_fit
 # Palette: a normal (good 1/n fit) panel in blue, a flagged (poor fit /
 # heterogeneous) panel in orange -- status-like use, not a categorical
 # series, so only two colors appear and each is labeled directly in its
 # panel title rather than via a legend.
-from common import setup_paper_style, COLOR_OK, COLOR_FLAG
+from common import setup_paper_style, COLOR_OK, COLOR_FLAG, fit_tan2_c
 setup_paper_style()
 import matplotlib.pyplot as plt
 
@@ -30,24 +29,6 @@ panels = [
     ('Sycophancy', 'qwen2.5-7B-Instruct', 'results/dim_angle_sycophancy_qwen2.5_7B_splithalf.csv'),
     ('Sycophancy', 'gemma-2-9B-it', 'results/dim_angle_sycophancy_gemma2_9B_it_splithalf.csv'),
 ]
-
-
-def fit_tan2_c(n, theta_split_deg, n_min_fit=5):
-    """Fit tan^2(theta_split/sqrt(2)) ~= C/n (see fit_dim_angle_c.py for the
-    derivation: theta_split/sqrt(2) approximates the single-estimate angle
-    to the true direction under a small-angle/high-dim-noise model)."""
-    mask = n >= n_min_fit
-    n_fit = n[mask].astype(float)
-    theta_single_rad = np.radians(theta_split_deg[mask]) / np.sqrt(2)
-    tan2 = np.tan(theta_single_rad) ** 2
-
-    popt, _ = curve_fit(lambda x, C: C / x, n_fit, tan2, p0=[1.0])
-    C = popt[0]
-    pred = C / n_fit
-    ss_res = np.sum((tan2 - pred) ** 2)
-    ss_tot = np.sum((tan2 - tan2.mean()) ** 2)
-    r2 = 1 - ss_res / ss_tot if ss_tot > 0 else float('nan')
-    return C, r2
 
 
 fig, axes = plt.subplots(3, 3, figsize=(12, 10.2), sharey=False)

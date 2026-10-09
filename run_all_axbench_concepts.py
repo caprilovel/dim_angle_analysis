@@ -4,11 +4,11 @@
 
 import os
 import numpy as np
-import torch
 import pandas as pd
-from scipy.optimize import curve_fit
 
-from common import angle_between, normalize, fold_assignment, AXBENCH_CACHE_PATH
+from common import angle_between, fit_tan2_c, AXBENCH_CACHE_PATH
+from dump_axbench_concept import load_axbench_cache
+from reweighted_dim_unpaired import reweighted_dim_unpaired
 
 CACHE_PATH = AXBENCH_CACHE_PATH
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -40,62 +40,8 @@ def split_half_sweep(Z_pos, Z_neg, n_max, n_trials=200, seed=42):
     return pd.DataFrame(rows)
 
 
-def fit_tan2_c(n, theta_split_deg, n_min_fit=5):
-    mask = n >= n_min_fit
-    n_fit = n[mask].astype(float)
-    theta_single_rad = np.radians(theta_split_deg[mask]) / np.sqrt(2)
-    tan2 = np.tan(theta_single_rad) ** 2
-    popt, _ = curve_fit(lambda x, C: C / x, n_fit, tan2, p0=[1.0])
-    C = popt[0]
-    pred = C / n_fit
-    ss_res = np.sum((tan2 - pred) ** 2)
-    ss_tot = np.sum((tan2 - tan2.mean()) ** 2)
-    r2 = 1 - ss_res / ss_tot if ss_tot > 0 else float('nan')
-    return C, r2
-
-
-def reweight_one_group(X, mu, fold_id, K, gamma, lam, c):
-    N = len(X)
-    a = np.empty(N)
-    tau2 = np.empty(N)
-    for k in range(K):
-        mask = fold_id == k
-        Xk = X[mask]
-        proj_coef = Xk @ mu
-        a[mask] = proj_coef
-        resid = Xk - np.outer(proj_coef, mu)
-        tau2[mask] = np.sum(resid ** 2, axis=1)
-    tau2_tilde = (1 - gamma) * tau2 + gamma * tau2.mean()
-    w_new = 1.0 / (tau2_tilde + lam)
-    w_new = np.clip(w_new, 0, c / N)
-    return w_new / w_new.sum()
-
-
-def reweighted_dim_unpaired(pos, neg, K=5, gamma=0.3, lam=0.01, c=5.0, T=10, seed=42):
-    rng = np.random.RandomState(seed)
-    fold_pos = fold_assignment(len(pos), K, rng)
-    fold_neg = fold_assignment(len(neg), K, rng)
-    mu = normalize(pos.mean(axis=0) - neg.mean(axis=0))
-    plain_mu = mu.copy()
-    w_pos = np.full(len(pos), 1.0 / len(pos))
-    w_neg = np.full(len(neg), 1.0 / len(neg))
-    for t in range(T):
-        w_pos = reweight_one_group(pos, mu, fold_pos, K, gamma, lam, c)
-        w_neg = reweight_one_group(neg, mu, fold_neg, K, gamma, lam, c)
-        mu_pos = (w_pos[:, None] * pos).sum(axis=0)
-        mu_neg = (w_neg[:, None] * neg).sum(axis=0)
-        mu = normalize(mu_pos - mu_neg)
-    return mu, w_pos, w_neg, plain_mu
-
-
 def main():
-    d = torch.load(CACHE_PATH, map_location='cpu', weights_only=False)
-    layer_key = [k for k in d.keys() if isinstance(k, int)][0]
-    hidden = d[layer_key].numpy()
-    labels = d['labels'].numpy() if torch.is_tensor(d['labels']) else np.asarray(d['labels'])
-    concept_ids = np.asarray(d['concept_ids'])
-    focus = np.asarray(d['focus'], dtype=object)
-    prompts = np.asarray(d['prompts'], dtype=object)
+    hidden, labels, concept_ids, prompts = load_axbench_cache(CACHE_PATH)
 
     neg_mask_all = labels == 0
     pos_mask_all = labels == 1
