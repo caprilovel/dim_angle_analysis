@@ -10,8 +10,10 @@ import argparse
 import torch
 import numpy as np
 
-_DEFAULT_OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'features_refusal')
+_REPO_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+_DEFAULT_OUT_DIR = os.path.join(_REPO_ROOT, 'features_refusal')
 
+sys.path.insert(0, _REPO_ROOT)
 from common import REFUSAL_AIRD_DIR
 sys.path.insert(0, REFUSAL_AIRD_DIR)
 os.chdir(REFUSAL_AIRD_DIR)

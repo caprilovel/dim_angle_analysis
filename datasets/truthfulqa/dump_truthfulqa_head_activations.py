@@ -10,8 +10,8 @@ import argparse
 import numpy as np
 from einops import rearrange
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-_DEFAULT_HONEST_LLAMA_DIR = os.path.normpath(os.path.join(_HERE, '..', 'honest_llama'))
+_REPO_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+_DEFAULT_HONEST_LLAMA_DIR = os.path.normpath(os.path.join(_REPO_ROOT, '..', 'honest_llama'))
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--top_head_cache', type=str, default='results/top_head_cache.json')
     parser.add_argument('--honest_llama_dir', type=str, default=_DEFAULT_HONEST_LLAMA_DIR)
-    parser.add_argument('--out_dir', type=str, default=os.path.join(_HERE, 'features_truthfulqa'))
+    parser.add_argument('--out_dir', type=str, default=os.path.join(_REPO_ROOT, 'features_truthfulqa'))
     args = parser.parse_args()
 
     sys.path.append(args.honest_llama_dir)

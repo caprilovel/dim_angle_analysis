@@ -15,12 +15,13 @@
 # confound, each stratum alone should fit the classic 1/n curve much better
 # than the pooled (unstratified) data.
 
+import os
 import sys
 import numpy as np
 import pandas as pd
-from scipy.optimize import curve_fit
 
-from common import angle_between, ANTHROPIC_AI_RISK_DIR
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')))
+from common import angle_between, fit_tan2_c, ANTHROPIC_AI_RISK_DIR
 
 sys.path.insert(0, ANTHROPIC_AI_RISK_DIR)
 from data import make_contrastive_pairs
@@ -39,20 +40,6 @@ def split_half_sweep(Z, n_max, n_trials=200, seed=42):
             angles[t] = angle_between(dir_a, dir_b)
         rows.append({'n': n, 'mean': angles.mean(), 'min': angles.min(), 'max': angles.max()})
     return pd.DataFrame(rows)
-
-
-def fit_tan2_c(n, theta_split_deg, n_min_fit=5):
-    mask = n >= n_min_fit
-    n_fit = n[mask].astype(float)
-    theta_single_rad = np.radians(theta_split_deg[mask]) / np.sqrt(2)
-    tan2 = np.tan(theta_single_rad) ** 2
-    popt, _ = curve_fit(lambda x, C: C / x, n_fit, tan2, p0=[1.0])
-    C = popt[0]
-    pred = C / n_fit
-    ss_res = np.sum((tan2 - pred) ** 2)
-    ss_tot = np.sum((tan2 - tan2.mean()) ** 2)
-    r2 = 1 - ss_res / ss_tot if ss_tot > 0 else float('nan')
-    return C, r2
 
 
 def main():

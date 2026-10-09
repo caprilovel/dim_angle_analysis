@@ -3,17 +3,21 @@
 # expanded_9b_l31 cache, and summarize results in one table.
 
 import os
+import sys
 import numpy as np
 import pandas as pd
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.normpath(os.path.join(HERE, '..', '..'))
+sys.path.insert(0, REPO_ROOT)
 
 from common import angle_between, fit_tan2_c, AXBENCH_CACHE_PATH
 from dump_axbench_concept import load_axbench_cache
 from reweighted_dim_unpaired import reweighted_dim_unpaired
 
 CACHE_PATH = AXBENCH_CACHE_PATH
-HERE = os.path.dirname(os.path.abspath(__file__))
-FEATURES_DIR = os.path.join(HERE, 'features_axbench')
-RESULTS_DIR = os.path.join(HERE, 'results')
+FEATURES_DIR = os.path.join(REPO_ROOT, 'features_axbench')
+RESULTS_DIR = os.path.join(REPO_ROOT, 'results')
 os.makedirs(FEATURES_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 

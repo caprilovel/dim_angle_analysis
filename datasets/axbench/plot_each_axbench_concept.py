@@ -4,15 +4,19 @@
 # C/R^2/angle summary from run_all_axbench_concepts.py.
 
 import os
+import sys
 import numpy as np
 import pandas as pd
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.normpath(os.path.join(HERE, '..', '..'))
+sys.path.insert(0, REPO_ROOT)
 from common import setup_paper_style, COLOR_POS, COLOR_NEG
 setup_paper_style()
 import matplotlib.pyplot as plt
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-RESULTS_DIR = os.path.join(HERE, 'results')
-OUT_DIR = os.path.join(HERE, 'figures', 'axbench_per_concept')
+RESULTS_DIR = os.path.join(REPO_ROOT, 'results')
+OUT_DIR = os.path.join(REPO_ROOT, 'figures', 'axbench_per_concept')
 os.makedirs(OUT_DIR, exist_ok=True)
 
 summary = pd.read_csv(os.path.join(RESULTS_DIR, 'axbench_all_concepts_summary.csv'))

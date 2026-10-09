@@ -3,8 +3,11 @@
 # sycophancy activations. Shows directly how much of each pool's variance in
 # projected strength is explained by the letter nuisance variable.
 
+import os
 import sys
 import numpy as np
+
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')))
 from common import setup_paper_style, ANTHROPIC_AI_RISK_DIR
 setup_paper_style()
 import matplotlib.pyplot as plt

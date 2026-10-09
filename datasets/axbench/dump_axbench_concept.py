@@ -4,9 +4,12 @@
 # (gemma-9b, layer 31; 20 concepts, 300 pos per concept, 300 shared neg).
 
 import argparse
+import os
+import sys
 import numpy as np
 import torch
 
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')))
 from common import AXBENCH_CACHE_PATH
 
 

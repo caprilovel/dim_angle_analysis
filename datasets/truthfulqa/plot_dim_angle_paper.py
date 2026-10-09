@@ -2,7 +2,11 @@
 # one model (Llama3-8B-Instruct, layer 13 / head 28, TruthfulQA), reading
 # the dense 500-point sweep CSV produced by test_dim_angle_sample.py.
 
+import os
+import sys
 import pandas as pd
+
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')))
 from common import setup_paper_style
 setup_paper_style()
 import matplotlib.pyplot as plt

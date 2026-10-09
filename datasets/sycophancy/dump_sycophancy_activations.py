@@ -11,6 +11,8 @@ import argparse
 import torch
 import numpy as np
 
+_REPO_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+sys.path.insert(0, _REPO_ROOT)
 from common import ANTHROPIC_AI_RISK_DIR
 sys.path.insert(0, ANTHROPIC_AI_RISK_DIR)
 
@@ -83,7 +85,7 @@ def main():
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--batch_size', type=int, default=8)
     parser.add_argument('--out_dir', type=str,
-                         default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'features_sycophancy'))
+                         default=os.path.join(_REPO_ROOT, 'features_sycophancy'))
     args = parser.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)

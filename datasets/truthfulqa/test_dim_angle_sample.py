@@ -27,10 +27,11 @@ from einops import rearrange
 
 import sys
 
+_REPO_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+sys.path.insert(0, _REPO_ROOT)
 from common import angle_between
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-_DEFAULT_HONEST_LLAMA_DIR = os.path.normpath(os.path.join(_HERE, '..', 'honest_llama'))
+_DEFAULT_HONEST_LLAMA_DIR = os.path.normpath(os.path.join(_REPO_ROOT, '..', 'honest_llama'))
 
 
 def main():
